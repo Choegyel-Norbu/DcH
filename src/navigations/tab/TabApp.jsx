@@ -21,11 +21,12 @@ export default function TabApp() {
           tabBarIcon: ({color, size}) => (
             <Icon name="home" size={size} color={color} />
           ),
+          // headerShown: false,
           tabBarBadge: 3,
         }}
       />
       <Tab.Screen
-        name="Profile"
+        name="ProfileTab"
         component={ProfileScreen}
         options={{
           tabBarIcon: ({color, size}) => (

@@ -24,7 +24,7 @@ export default function HomeScreen() {
         }}
       />
       <Drawer.Screen
-        name="Profile"
+        name="ProfileTab"
         component={ProfileScreen}
         options={{
           headerShown: false,
