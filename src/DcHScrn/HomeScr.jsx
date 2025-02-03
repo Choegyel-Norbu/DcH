@@ -19,15 +19,7 @@ export default function HomeScr() {
   const offerList = OfferList();
 
   const renderOfferTemp = ({item}) => {
-    return (
-      <View style={styles.offerCarouselItems}>
-        <Image source={{uri: item.uri}} style={{width: 250, height: 150}} />
-        <View style={styles.cardText}>
-          <Text>{item.name}</Text>
-          <Text>{item.status}</Text>
-        </View>
-      </View>
-    );
+    return <ImageCard offerItems={item} />;
   };
 
   return (
@@ -77,16 +69,14 @@ export default function HomeScr() {
           </Pressable>
         </View>
         <View style={styles.offerCarousel}>
+          <Text style={{marginTop: 20}}> OFFERS</Text>
           <FlatList
             horizontal
             data={offerList}
             keyExtractor={item => item.id}
             renderItem={renderOfferTemp}
-          />{' '}
-          */}
-        </View>
-        <View>
-          <ImageCard />
+            showsHorizontalScrollIndicator={false}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -112,11 +102,8 @@ const styles = StyleSheet.create({
     width: '95%',
     margin: 'auto',
     borderTopRightRadius: 20,
-
-    transform: [
-      {translateX: 0}, // Move 100 units along the X-axis
-      {translateY: -40}, // Move 50 units along the Y-axis
-    ],
+    borderTopLeftRadius: 20,
+    transform: [{translateX: 0}, {translateY: -40}],
   },
   contentFeatures: {
     flexDirection: 'row',

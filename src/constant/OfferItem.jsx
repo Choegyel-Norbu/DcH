@@ -8,8 +8,14 @@ export const OfferList = () => {
     },
     {
       id: 2,
-      name: 'Clothings',
-      uri: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Clothing_store_in_Thailand.jpg', // Updated URL
+      name: 'Servicing',
+      uri: 'https://media.istockphoto.com/id/653003428/photo/fashionable-clothes-in-a-boutique-store-in-london.jpg?s=612x612&w=0&k=20&c=UafU4a4xSbepJow4kvNu0q-LD4hFUoli7q3fvwkp79s=',
+      status: 'active',
+    },
+    {
+      id: 3,
+      name: 'Donation',
+      uri: 'https://www.investopedia.com/thmb/hvCs7nGRZ539vKETw1KIHvk2HzM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-1173117669-baa23a3889054f828aebc58f9de136b6.jpg',
       status: 'active',
     },
     {
