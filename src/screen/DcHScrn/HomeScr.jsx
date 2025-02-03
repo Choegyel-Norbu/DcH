@@ -8,24 +8,34 @@ import {
   Image,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import MiniCards from '../cards/MiniCards';
+import MiniCards from '../../cards/MiniCards';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {OfferList} from '../constant/OfferItem';
-import ImageCard from '../cards/ImageCard';
+import {OfferList} from '../../constant/OfferItem';
+import ImageCard from '../../cards/ImageCard';
+import LinearGradient from 'react-native-linear-gradient';
+import {UserContext} from '../../constant/UserContext';
 
 export default function HomeScr() {
   const offerList = OfferList();
+  const {setUser} = useContext(UserContext);
 
   const renderOfferTemp = ({item}) => {
     return <ImageCard offerItems={item} />;
   };
 
+  const logOut = () => {
+    setUser(false);
+  };
   return (
     <SafeAreaView style={{flex: 1}}>
       <StatusBar backgroundColor="#3399ff" barStyle="light-content" />
-      <View style={styles.homeHeader}>
+      <LinearGradient
+        colors={['#0066cc', '#3399ff']}
+        style={styles.homeHeader}
+        start={{x: 1, y: 0}}
+        end={{x: 1, y: 0}}>
         <Text
           style={{
             fontWeight: 'bold',
@@ -35,23 +45,27 @@ export default function HomeScr() {
           }}>
           Welcome
         </Text>
-        <Pressable onPress={() => Alert.alert('more-vert')}>
+        <Pressable onPress={logOut}>
           <Icon name="more-vert" size={25} color="#fff" />
         </Pressable>
-      </View>
+      </LinearGradient>
+
       <View style={styles.homeContainer}>
         <View style={styles.contentFeatures}>
           <Pressable
             onPress={() => Alert.alert('Pressed')}
             style={styles.pressable}>
-            <MiniCards filePath={require('../images/post.png')} title="Post" />
+            <MiniCards
+              filePath={require('../../images/post.png')}
+              title="Post"
+            />
           </Pressable>
 
           <Pressable
             onPress={() => Alert.alert('Pressed')}
             style={styles.pressable}>
             <MiniCards
-              filePath={require('../images/donate.png')}
+              filePath={require('../../images/donate.png')}
               title="Donate"
             />
           </Pressable>
@@ -59,13 +73,19 @@ export default function HomeScr() {
           <Pressable
             onPress={() => Alert.alert('Pressed')}
             style={styles.pressable}>
-            <MiniCards filePath={require('../images/chats.png')} title="Chat" />
+            <MiniCards
+              filePath={require('../../images/chats.png')}
+              title="Chat"
+            />
           </Pressable>
 
           <Pressable
             onPress={() => Alert.alert('Pressed')}
             style={styles.pressable}>
-            <MiniCards filePath={require('../images/post2.png')} title="PR" />
+            <MiniCards
+              filePath={require('../../images/post2.png')}
+              title="PR"
+            />
           </Pressable>
         </View>
         <View style={styles.offerCarousel}>
