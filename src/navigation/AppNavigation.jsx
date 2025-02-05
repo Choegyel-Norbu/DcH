@@ -1,26 +1,24 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {useContext} from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import React, {useContext, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import DrawerNavition from './DrawerNavigation';
 import AuthNavigation from './AuthNavigation';
-import {UserContext} from '../constant/UserContext';
-
-const AppStack = createStackNavigator();
+import {AuthContext} from '../custom/AuthContext';
+import {ActivityIndicator, View} from 'react-native';
+import DrawerNavigation from './DrawerNavigation';
 
 export default function AppNavigation() {
-  const user = false;
+  const {isLoading, userToken} = useContext(AuthContext);
+
+  if (isLoading) {
+    // return (
+    //   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    //     <ActivityIndicator size="large" color="#3498db" />
+    //   </View>
+    // );
+  }
+
   return (
     <NavigationContainer>
-      <AppStack.Navigator screenOptions={{headerShown: false}}>
-        {user ? (
-          <AppStack.Screen name="App" component={DrawerNavition} />
-        ) : (
-          <AppStack.Screen name="Auth" component={AuthNavigation} />
-        )}
-      </AppStack.Navigator>
+      {userToken !== null ? <DrawerNavigation /> : <AuthNavigation />}
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({});

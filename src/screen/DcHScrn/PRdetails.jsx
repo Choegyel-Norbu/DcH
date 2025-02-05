@@ -1,10 +1,10 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
-export default function HRlisingScr() {
+export default function PRdetails() {
   return (
     <View>
-      <Text>HRlisingScr</Text>
+      <Text>PRdetails</Text>
     </View>
   );
 }

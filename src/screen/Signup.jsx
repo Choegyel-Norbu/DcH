@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  Modal,
   Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -15,6 +16,7 @@ import CustomButton from '../custom/CustomButton';
 import axios from 'axios';
 import API_BASE_URL from '../config.jsx';
 import {ScrollView} from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
 
 const SignupScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -23,6 +25,7 @@ const SignupScreen = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const [errors, setErrors] = useState({
     firstName: '',
@@ -97,11 +100,33 @@ const SignupScreen = ({navigation}) => {
 
     const userData = {firstName, lastName, email, phone, password};
     try {
-      const response = await axios.post(`${API_BASE_URL}addUser`, userData);
+      const response = await axios.post(
+        `${API_BASE_URL}api/registration`,
+        userData,
+        Toast.show({
+          type: 'success',
+          text1: 'Registration Successful! 🎉',
+          position: 'top',
+          visibilityTime: 3000, // Auto-dismiss in 3s
+          onHide: () => navigation.navigate('Login'), // Redirect after hiding
+        }),
+      );
     } catch (error) {
-      Alert.alert('Error while registration!');
+      Alert.alert(error);
     }
   };
+
+  // useEffect(() => {
+  //   if (showModal) {
+  //     // Auto-dismiss after 3 seconds
+  //     const timer = setTimeout(() => {
+  //       setShowModal(false);
+  //       navigation.navigate('Home'); // Change to your desired screen
+  //     }, 3000);
+
+  //     return () => clearTimeout(timer); // Cleanup timer on unmount
+  //   }
+  // }, [showModal]);
 
   return (
     <ImageBackground
@@ -120,69 +145,81 @@ const SignupScreen = ({navigation}) => {
             <Text style={styles.title}>Create Account</Text>
             <Text style={styles.subtitle}>Sign up to get started</Text>
 
-            {errors.firstName ? (
-              <Text style={styles.errorText}>{errors.firstName}</Text>
-            ) : null}
-            <CustomInput
-              placeholder="First Name"
-              icon="person"
-              value={firstName}
-              onChangeText={setFirstName}
-            />
+            <View style={styles.errorInputStyle}>
+              {errors.firstName ? (
+                <Text style={styles.errorText}>{errors.firstName}</Text>
+              ) : null}
+              <CustomInput
+                placeholder="First Name"
+                icon="person"
+                value={firstName}
+                onChangeText={setFirstName}
+              />
+            </View>
 
-            {errors.lastName ? (
-              <Text style={styles.errorText}>{errors.lastName}</Text>
-            ) : null}
-            <CustomInput
-              placeholder="Last Name"
-              icon="person"
-              value={lastName}
-              onChangeText={setLastName}
-            />
+            <View style={styles.errorInputStyle}>
+              {errors.lastName ? (
+                <Text style={styles.errorText}>{errors.lastName}</Text>
+              ) : null}
+              <CustomInput
+                placeholder="Last Name"
+                icon="person"
+                value={lastName}
+                onChangeText={setLastName}
+              />
+            </View>
 
-            {errors.password ? (
-              <Text style={styles.errorText}>{errors.password}</Text>
-            ) : null}
-            <CustomInput
-              placeholder="Password"
-              icon="lock"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
+            <View style={styles.errorInputStyle}>
+              {errors.password ? (
+                <Text style={styles.errorText}>{errors.password}</Text>
+              ) : null}
+              <CustomInput
+                placeholder="Password"
+                icon="lock"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+              />
+            </View>
 
-            {errors.confirmPassword ? (
-              <Text style={styles.errorText}>{errors.confirmPassword}</Text>
-            ) : null}
-            <CustomInput
-              placeholder="Confirm Password"
-              icon="lock"
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              secureTextEntry
-            />
+            <View style={styles.errorInputStyle}>
+              {errors.confirmPassword ? (
+                <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+              ) : null}
+              <CustomInput
+                placeholder="Confirm Password"
+                icon="lock"
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                secureTextEntry
+              />
+            </View>
 
-            {errors.email ? (
-              <Text style={styles.errorText}>{errors.email}</Text>
-            ) : null}
-            <CustomInput
-              placeholder="Email"
-              icon="email"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-            />
+            <View style={styles.errorInputStyle}>
+              {errors.email ? (
+                <Text style={styles.errorText}>{errors.email}</Text>
+              ) : null}
+              <CustomInput
+                placeholder="Email"
+                icon="email"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+              />
+            </View>
 
-            {errors.phone ? (
-              <Text style={styles.errorText}>{errors.phone}</Text>
-            ) : null}
-            <CustomInput
-              placeholder="Phone number"
-              icon="phone"
-              value={phone}
-              onChangeText={setPhone}
-              keyboardType="phone-pad"
-            />
+            <View style={styles.errorInputStyle}>
+              {errors.phone ? (
+                <Text style={styles.errorText}>{errors.phone}</Text>
+              ) : null}
+              <CustomInput
+                placeholder="Phone number"
+                icon="phone"
+                value={phone}
+                onChangeText={setPhone}
+                keyboardType="phone-pad"
+              />
+            </View>
 
             <CustomButton title="Sign Up" onPress={handleUserRegister} />
 
@@ -195,6 +232,15 @@ const SignupScreen = ({navigation}) => {
           </ScrollView>
         </KeyboardAvoidingView>
       </LinearGradient>
+      {/* Success Modal */}
+      <Modal visible={showModal} transparent animationType="fade">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.successText}>Registration Successful! 🎉</Text>
+            <Text style={styles.redirectText}>Redirecting...</Text>
+          </View>
+        </View>
+      </Modal>
     </ImageBackground>
   );
 };
@@ -240,10 +286,35 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   errorText: {
-    color: 'red',
+    color: '#ff1a1a',
     fontSize: 12,
     justifyContent: 'flex-start',
     textAlign: 'left',
+  },
+  errorInputStyle: {
+    alignItems: 'flex-start',
+    width: '100%',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  successText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  redirectText: {
+    fontSize: 14,
+    color: 'gray',
   },
 });
 

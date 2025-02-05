@@ -1,20 +1,44 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import HomeScr from '../screen/DcHScrn/HomeScr';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PRscr from '../screen/DcHScrn/PRscr';
+import {createStackNavigator} from '@react-navigation/stack';
+import HomeScr from '../screen/DcHScrn/HomeScr';
+import PRdetails from '../screen/DcHScrn/PRdetails';
+import HRlisingScr from '../screen/DcHScrn/HRlisingScr';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+const HomeStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        component={HomeScr}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen name="PRdetails" component={PRdetails} />
+      <Stack.Screen name="HRlisting" component={HRlisingScr} />
+    </Stack.Navigator>
+  );
+};
 
 export default function TabNavigation() {
   return (
-    <Tab.Navigator screenOptions={{headerShown: false}}>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {backgroundColor: '#3399ff'},
+        tabBarActiveTintColor: '#3399ff',
+        tabBarInactiveTintColor: '#888',
+      }}>
       <Tab.Screen
         name="Home"
-        component={HomeScr}
+        component={HomeStack}
         options={{
-          tabBarIcon: ({color}) => <Icon name="home" size={24} color={color} />,
+          tabBarIcon: () => <Icon name="home" size={28} color="#fff" />,
+          tabBarLabelStyle: {color: '#fff'},
         }}
       />
 
@@ -22,9 +46,8 @@ export default function TabNavigation() {
         name="PR"
         component={PRscr}
         options={{
-          tabBarIcon: ({color}) => (
-            <Icon name="person" size={24} color={color} />
-          ),
+          tabBarIcon: () => <Icon name="person" size={28} color="#fff" />,
+          tabBarLabelStyle: {color: '#fff'},
         }}
       />
     </Tab.Navigator>

@@ -15,19 +15,15 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {OfferList} from '../../constant/OfferItem';
 import ImageCard from '../../cards/ImageCard';
 import LinearGradient from 'react-native-linear-gradient';
-import {UserContext} from '../../constant/UserContext';
 
-export default function HomeScr() {
+export default function HomeScr({navigation}) {
   const offerList = OfferList();
-  const {setUser} = useContext(UserContext);
 
   const renderOfferTemp = ({item}) => {
     return <ImageCard offerItems={item} />;
   };
 
-  const logOut = () => {
-    setUser(false);
-  };
+  const logOut = () => {};
   return (
     <SafeAreaView style={{flex: 1}}>
       <StatusBar backgroundColor="#3399ff" barStyle="light-content" />
@@ -53,7 +49,7 @@ export default function HomeScr() {
       <View style={styles.homeContainer}>
         <View style={styles.contentFeatures}>
           <Pressable
-            onPress={() => Alert.alert('Pressed')}
+            onPress={() => navigation.navigate('PRdetails')}
             style={styles.pressable}>
             <MiniCards
               filePath={require('../../images/post.png')}
@@ -62,7 +58,7 @@ export default function HomeScr() {
           </Pressable>
 
           <Pressable
-            onPress={() => Alert.alert('Pressed')}
+            onPress={() => navigation.navigate('HRlisting')}
             style={styles.pressable}>
             <MiniCards
               filePath={require('../../images/donate.png')}
