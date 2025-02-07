@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -16,8 +16,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthContext} from '../custom/AuthContext';
 
 export default function CustomDrawer(props) {
-  const {logOut} = useContext(AuthContext);
+  const {logOut, firstName, lastName, email} = useContext(AuthContext);
 
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    let userName = `${firstName} ${lastName}`;
+    setUserName(userName);
+  }, []);
   const handleLogout = async () => {
     Alert.alert('Logout', 'Are you sure you want to logout?', [
       {
@@ -41,8 +47,8 @@ export default function CustomDrawer(props) {
       {/* Profile Header */}
       <View style={styles.header}>
         <Image source={require('../images/donate.png')} style={styles.avatar} />
-        <Text style={styles.username}>Chogyal</Text>
-        <Text style={styles.email}>choegyellgmail.com</Text>
+        <Text style={styles.username}>{userName}</Text>
+        <Text style={styles.email}>{email}</Text>
       </View>
 
       {/* Drawer Menu Items */}

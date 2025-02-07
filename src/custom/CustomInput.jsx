@@ -25,7 +25,7 @@ export default function CustomInput({
 
   return (
     <View style={styles.inputContainer}>
-      <Icon name={icon} size={20} color="#fff" style={styles.icon} />
+      <Icon name={icon} size={20} color="#595959" style={styles.icon} />
       <TextInput
         style={styles.input}
         placeholder={placeholder}
@@ -42,7 +42,7 @@ export default function CustomInput({
           <Icon
             name={showPassword ? 'visibility-off' : 'visibility'}
             size={24}
-            color="#fff"
+            color="#bfbfbf"
           />
         </TouchableOpacity>
       )}
@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 25,
+    borderRadius: 0,
     paddingHorizontal: 15,
-    marginBottom: 15,
+    borderBottomWidth: 0.5,
+    padding: 5,
   },
   icon: {
     marginRight: 10,
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: 50,
-    color: '#fff',
+    color: '#595959',
   },
   eyeIcon: {
     padding: 10,

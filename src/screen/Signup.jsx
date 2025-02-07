@@ -53,7 +53,7 @@ const SignupScreen = ({navigation}) => {
     }
 
     if (!lastName.trim()) {
-      newErrors.lastName = 'Second is required!';
+      newErrors.lastName = 'Last Name is required!';
       isValid = false;
     }
 
@@ -116,132 +116,101 @@ const SignupScreen = ({navigation}) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (showModal) {
-  //     // Auto-dismiss after 3 seconds
-  //     const timer = setTimeout(() => {
-  //       setShowModal(false);
-  //       navigation.navigate('Home'); // Change to your desired screen
-  //     }, 3000);
-
-  //     return () => clearTimeout(timer); // Cleanup timer on unmount
-  //   }
-  // }, [showModal]);
-
   return (
-    <ImageBackground
-      source={require('../images/donate.png')}
-      style={styles.background}>
-      <LinearGradient
-        colors={['rgba(0,0,0,0.6)', 'rgba(0,0,0,0.8)']}
-        style={styles.gradient}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.container}>
-          <ScrollView
-            contentContainerStyle={styles.scrollContainer}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}>
-            <Text style={styles.title}>Create Account</Text>
-            <Text style={styles.subtitle}>Sign up to get started</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}>Create Account</Text>
+        <Text style={styles.subtitle}>Sign up to get started</Text>
 
-            <View style={styles.errorInputStyle}>
-              {errors.firstName ? (
-                <Text style={styles.errorText}>{errors.firstName}</Text>
-              ) : null}
-              <CustomInput
-                placeholder="First Name"
-                icon="person"
-                value={firstName}
-                onChangeText={setFirstName}
-              />
-            </View>
-
-            <View style={styles.errorInputStyle}>
-              {errors.lastName ? (
-                <Text style={styles.errorText}>{errors.lastName}</Text>
-              ) : null}
-              <CustomInput
-                placeholder="Last Name"
-                icon="person"
-                value={lastName}
-                onChangeText={setLastName}
-              />
-            </View>
-
-            <View style={styles.errorInputStyle}>
-              {errors.password ? (
-                <Text style={styles.errorText}>{errors.password}</Text>
-              ) : null}
-              <CustomInput
-                placeholder="Password"
-                icon="lock"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-              />
-            </View>
-
-            <View style={styles.errorInputStyle}>
-              {errors.confirmPassword ? (
-                <Text style={styles.errorText}>{errors.confirmPassword}</Text>
-              ) : null}
-              <CustomInput
-                placeholder="Confirm Password"
-                icon="lock"
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                secureTextEntry
-              />
-            </View>
-
-            <View style={styles.errorInputStyle}>
-              {errors.email ? (
-                <Text style={styles.errorText}>{errors.email}</Text>
-              ) : null}
-              <CustomInput
-                placeholder="Email"
-                icon="email"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-              />
-            </View>
-
-            <View style={styles.errorInputStyle}>
-              {errors.phone ? (
-                <Text style={styles.errorText}>{errors.phone}</Text>
-              ) : null}
-              <CustomInput
-                placeholder="Phone number"
-                icon="phone"
-                value={phone}
-                onChangeText={setPhone}
-                keyboardType="phone-pad"
-              />
-            </View>
-
-            <CustomButton title="Sign Up" onPress={handleUserRegister} />
-
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-              <Text style={styles.footerText}>
-                Already have an account?{' '}
-                <Text style={styles.footerLink}>Login</Text>
-              </Text>
-            </TouchableOpacity>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </LinearGradient>
-      {/* Success Modal */}
-      <Modal visible={showModal} transparent animationType="fade">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.successText}>Registration Successful! 🎉</Text>
-            <Text style={styles.redirectText}>Redirecting...</Text>
-          </View>
+        <View style={styles.errorInputStyle}>
+          {errors.firstName ? (
+            <Text style={styles.errorText}>{errors.firstName}</Text>
+          ) : null}
+          <CustomInput
+            placeholder=" First name "
+            icon="person"
+            value={firstName}
+            onChangeText={setFirstName}
+          />
         </View>
-      </Modal>
-    </ImageBackground>
+        <View style={styles.errorInputStyle}>
+          {errors.lastName ? (
+            <Text style={styles.errorText}>{errors.lastName}</Text>
+          ) : null}
+          <CustomInput
+            placeholder=" Last name "
+            icon="person"
+            value={lastName}
+            onChangeText={setLastName}
+          />
+        </View>
+        <View style={styles.errorInputStyle}>
+          {errors.password ? (
+            <Text style={styles.errorText}>{errors.password}</Text>
+          ) : null}
+          <CustomInput
+            placeholder="Password"
+            icon="lock"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+        </View>
+
+        <View style={styles.errorInputStyle}>
+          {errors.confirmPassword ? (
+            <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+          ) : null}
+          <CustomInput
+            placeholder="Confirm Password"
+            icon="lock"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry
+          />
+        </View>
+
+        <View style={styles.errorInputStyle}>
+          {errors.email ? (
+            <Text style={styles.errorText}>{errors.email}</Text>
+          ) : null}
+          <CustomInput
+            placeholder="Email"
+            icon="email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
+        </View>
+
+        <View style={styles.errorInputStyle}>
+          {errors.phone ? (
+            <Text style={styles.errorText}>{errors.phone}</Text>
+          ) : null}
+          <CustomInput
+            placeholder="Phone number"
+            icon="phone"
+            value={phone}
+            onChangeText={setPhone}
+            keyboardType="phone-pad"
+          />
+        </View>
+
+        <CustomButton title="Sign Up" onPress={handleUserRegister} />
+
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.footerText}>
+            Already have an account?{' '}
+            <Text style={styles.footerLink}>Login</Text>
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -257,28 +226,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 30,
     width: '100%',
   },
   scrollContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '80%',
+    width: '100%',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#000',
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
-    color: '#fff',
+    color: '#000',
     marginBottom: 30,
   },
   footerText: {
-    color: '#fff',
+    color: '#000',
     marginTop: 20,
   },
   footerLink: {

@@ -7,7 +7,8 @@ import Toast from 'react-native-toast-message';
 const App = () => {
   return (
     <AuthProvider>
-      <AppNavigation />;{/* ensures the Toast component is always available. */}
+      <AppNavigation />
+      {/* ensures the Toast component is always available. */}
       <Toast />
     </AuthProvider>
   );

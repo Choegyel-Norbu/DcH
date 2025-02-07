@@ -1,33 +1,45 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import API_BASE_URL from '../config';
+import {ActivityIndicator} from 'react-native';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
   const [userToken, setUserToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
 
-  const logIn = async token => {
+  const logIn = async (token, userData) => {
     try {
       await AsyncStorage.setItem('userToken', token);
+      setUserToken(token);
       setIsLoading(false);
+      setFirstName(userData.firstName);
+      setLastName(userData.lastName);
+      setEmail(user(userData.email));
       console.log('Token saved successfully @@@ ' + token);
     } catch (error) {
       console.log(error);
     }
-
-    setUserToken('lkgjldjlkklggl');
-    console.log('@@@@ ' + userToken);
   };
 
   const logOut = () => {
     setUserToken(null);
-    console.log('Hit logout');
   };
 
   return (
-    <AuthContext.Provider value={{logIn, logOut, isLoading, userToken}}>
+    <AuthContext.Provider
+      value={{
+        logIn,
+        logOut,
+        isLoading,
+        userToken,
+        firstName,
+        lastName,
+        email,
+      }}>
       {children}
     </AuthContext.Provider>
   );
