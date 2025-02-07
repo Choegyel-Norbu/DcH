@@ -72,9 +72,6 @@ export default function Login({navigation}) {
       );
 
       if (response.status === 200) {
-        const {firstName, lastName} = response.data.userDTO;
-        console.log('User First Name:', firstName);
-        console.log('User Last Name:', lastName);
         logIn(response.data.token, response.data.userDTO);
       }
     } catch (error) {

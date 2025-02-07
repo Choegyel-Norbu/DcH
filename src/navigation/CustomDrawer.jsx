@@ -14,30 +14,28 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthContext} from '../custom/AuthContext';
+import LogoutDialog from '../custom/LogoutDialog';
 
 export default function CustomDrawer(props) {
   const {logOut, firstName, lastName, email} = useContext(AuthContext);
 
   const [userName, setUserName] = useState('');
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     let userName = `${firstName} ${lastName}`;
     setUserName(userName);
   }, []);
+
+  const showDialog = () => setVisible(true);
+  const hideDialog = () => {
+    setVisible(false);
+    props.navigation.closeDrawer();
+  };
+
   const handleLogout = async () => {
-    Alert.alert('Logout', 'Are you sure you want to logout?', [
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-      {
-        text: 'Logout',
-        onPress: async () => {
-          await AsyncStorage.removeItem('userToken');
-          props.navigation.replace('Auth');
-        },
-      },
-    ]);
+    hideDialog();
+    logOut();
   };
 
   return (
@@ -57,9 +55,14 @@ export default function CustomDrawer(props) {
       </View>
 
       {/* Logout Button */}
-      <TouchableOpacity style={styles.logoutButton} onPress={logOut}>
+      <TouchableOpacity style={styles.logoutButton} onPress={showDialog}>
         <Icon name="logout" size={22} color="white" />
         <Text style={styles.logoutText}>Logout</Text>
+        <LogoutDialog
+          visible={visible}
+          onDismiss={hideDialog}
+          onConfirm={handleLogout}
+        />
       </TouchableOpacity>
     </DrawerContentScrollView>
   );
@@ -95,7 +98,7 @@ const styles = StyleSheet.create({
   logoutButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ff6f61',
+    backgroundColor: '#cc5200',
     paddingVertical: 12,
     paddingHorizontal: 20,
     margin: 20,

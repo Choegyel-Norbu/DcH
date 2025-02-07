@@ -1,6 +1,7 @@
 import React, {createContext, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ActivityIndicator} from 'react-native';
+import LogoutDialog from './LogoutDialog';
 
 export const AuthContext = createContext();
 
@@ -18,7 +19,7 @@ export const AuthProvider = ({children}) => {
       setIsLoading(false);
       setFirstName(userData.firstName);
       setLastName(userData.lastName);
-      setEmail(user(userData.email));
+      setEmail(userData.email);
       console.log('Token saved successfully @@@ ' + token);
     } catch (error) {
       console.log(error);
