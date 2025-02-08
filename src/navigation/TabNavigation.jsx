@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PRscr from '../screen/DcHScrn/PRscr';
@@ -6,6 +6,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import HomeScr from '../screen/DcHScrn/HomeScr';
 import PRdetails from '../screen/DcHScrn/PRdetails';
 import HRlisingScr from '../screen/DcHScrn/HRlisingScr';
+import Service from '../screen/DcHScrn/Service';
+import ProfileScr from '../screen/DcHScrn/ProfileScr';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -43,8 +45,8 @@ export default function TabNavigation() {
       />
 
       <Tab.Screen
-        name="PR"
-        component={PRscr}
+        name="Profile"
+        component={ProfileScr}
         options={{
           tabBarIcon: () => <Icon name="person" size={28} color="#fff" />,
           tabBarLabelStyle: {color: '#fff'},

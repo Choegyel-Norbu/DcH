@@ -11,18 +11,15 @@ import {
 } from 'react-native';
 
 import React, {useContext, useState} from 'react';
-import LinearGradient from 'react-native-linear-gradient';
 import CustomInput from '../custom/CustomInput';
 import CustomButton from '../custom/CustomButton';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import API_BASE_URL from '../config';
 import {AuthContext} from '../custom/AuthContext';
 import Toast from 'react-native-toast-message';
-import {useSafeAreaFrame} from 'react-native-safe-area-context';
 
 export default function Login({navigation}) {
-  const {logIn, firstName, lastName} = useContext(AuthContext);
+  const {logIn} = useContext(AuthContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

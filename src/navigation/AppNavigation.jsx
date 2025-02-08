@@ -18,7 +18,8 @@ export default function AppNavigation() {
 
   return (
     <NavigationContainer>
-      {userToken !== null ? <DrawerNavigation /> : <AuthNavigation />}
+      {/* {userToken !== null ? <DrawerNavigation /> : <AuthNavigation />} */}
+      <DrawerNavigation />
     </NavigationContainer>
   );
 }
