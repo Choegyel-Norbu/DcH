@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Image,
   StatusBar,
@@ -7,16 +8,46 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
-import {FlatList, Pressable, ScrollView} from 'react-native-gesture-handler';
+import React, {useContext, useEffect, useState} from 'react';
+import {Pressable, ScrollView} from 'react-native-gesture-handler';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {dummyArray} from '../../components/DummyArray';
+import {AuthContext} from '../../custom/AuthContext';
+import API_BASE_URL from '../../config';
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
+import {Roles} from '../../constant/NavItem';
 
 export default function ProfileScr() {
-  const [selectedType, setSelectedType] = useState(null);
+  const [selectedValue, setSelectedValue] = useState([]);
+  const {email, firstName, lastName} = useContext(AuthContext);
+  const [userName, setUserName] = useState('');
+  const [retrivedServices, setRetrivedServices] = useState([]);
 
+  useEffect(() => {
+    setUserName(`${firstName} ${lastName}`);
+  }, []);
+
+  useEffect(() => {
+    if (selectedValue && selectedValue.length > 0) {
+      console.log('inside useEffect');
+      fetchData();
+    }
+  }, [selectedValue]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}api/getServices`, {
+        email,
+      });
+      setRetrivedServices(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState([]);
+
+  const [services, setServices] = useState([]);
   const [items, setItems] = useState([
     {label: 'Donation', value: 'Donation'},
     {label: 'Physical service', value: 'Physical service'},
@@ -24,7 +55,9 @@ export default function ProfileScr() {
     {label: 'Online consultant', value: 'Online consultation'},
     {label: 'Other', value: 'Other'},
   ]);
+
   const [isActive, setIsActive] = useState(true);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const serviceOffers = dummyArray();
 
@@ -40,7 +73,42 @@ export default function ProfileScr() {
     );
   };
 
-  const handleServiceSubmit = () => {};
+  const handleServiceSubmit = async () => {
+    const requestData = {
+      email,
+      services,
+    };
+    if (services.length === 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'You must select atleast one service.',
+        position: 'top',
+        visibilityTime: 3000,
+      });
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}api/addServices`,
+        requestData,
+        {
+          headers: {
+            'Content-Type': 'Application/json',
+          },
+        },
+      );
+      Toast.show({
+        type: 'success',
+        text1: 'Services successfully saved! 🎉',
+        position: 'top',
+        visibilityTime: 3000,
+      });
+      setServices([]);
+      // setButtonDisabled(true);
+    } catch (error) {
+      Alert.alert(error);
+    }
+  };
 
   return (
     <ScrollView
@@ -49,34 +117,35 @@ export default function ProfileScr() {
       <View style={styles.profileHeader}>
         <View style={styles.profileImg}>
           <Image
-            style={{height: 90, width: 90, borderRadius: 60}}
+            style={{height: 80, width: 80, borderRadius: 60}}
             source={require('../../images/wasp.jpg')}
           />
         </View>
         <View style={styles.profileDetail}>
-          <Text style={{fontWeight: '700', fontSize: 16}}>Profile name</Text>
-          <Text style={{marginBottom: 10, fontSize: 12}}>
-            tashiwangmo94@gmail.com
-          </Text>
+          <Text style={{fontWeight: '700', fontSize: 16}}>{userName}</Text>
+          <Text style={{marginBottom: 10, fontSize: 12}}>{email}</Text>
           <Button title="Edit profile" />
         </View>
       </View>
 
       {/* Add Service container */}
+
       <View style={styles.serviceContainer}>
         <Text style={styles.title}>Select Services You Provide</Text>
         <View style={styles.dropDownMainContainer}>
           <DropDownPicker
             open={open}
-            value={value}
+            value={services}
             items={items}
             multiple={true}
             min={1}
             max={3}
             setOpen={setOpen}
-            setValue={setValue}
+            setValue={setServices}
             mode="BADGE"
+            disabled={buttonDisabled}
             setItems={setItems}
+            onChangeValue={selected => setSelectedValue(selected)}
             style={{
               backgroundColor: '#fff',
               borderColor: 'gray',
@@ -85,6 +154,7 @@ export default function ProfileScr() {
             }}
             textStyle={{fontSize: 16}}
             placeholder="Select services"
+            placeholderStyle={{color: '#808080'}}
             dropDownContainerStyle={{
               backgroundColor: '#f2f2f2',
               borderColor: '#737373',
@@ -95,14 +165,25 @@ export default function ProfileScr() {
               borderBottomColor: '#f2f2f2',
               paddingVertical: 10,
             }}
-            listItemLabelStyle={{fontSize: 16, color: '#737373'}}
+            listItemLabelStyle={{fontSize: 16, color: '#333333'}}
           />
         </View>
         <TouchableOpacity
           onPress={handleServiceSubmit}
           style={styles.serviceSubBtn}>
-          <Text style={{color: '#fff', fontSize: 16}}>Done</Text>
+          <Text style={{color: '#fff', fontSize: 16}}>Add service</Text>
         </TouchableOpacity>
+        {/* {buttonDisabled ? (
+          <Pressable style={styles.serviceSubBtnDisabled}>
+            <Text style={{color: '#333333', fontSize: 16}}>Add service</Text>
+          </Pressable>
+        ) : (
+          <TouchableOpacity
+            onPress={handleServiceSubmit}
+            style={styles.serviceSubBtn}>
+            <Text style={{color: '#fff', fontSize: 16}}>Add service</Text>
+          </TouchableOpacity>
+        )} */}
       </View>
 
       {/* Service list */}
@@ -125,7 +206,7 @@ export default function ProfileScr() {
                   source={item.imgSrc}
                   style={{height: 30, width: 30, marginRight: 5}}
                 />
-                <Text style={{fontSize: 14, fontWeight: '200'}}>
+                <Text style={{fontSize: 14, fontWeight: '600'}}>
                   {item.service}
                 </Text>
               </View>
@@ -198,6 +279,16 @@ const styles = StyleSheet.create({
   },
   serviceSubBtn: {
     backgroundColor: '#ff6600',
+    borderRadius: 20,
+    padding: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    width: '100%',
+    margin: 'auto',
+    marginTop: 20,
+  },
+  serviceSubBtnDisabled: {
+    backgroundColor: '#ff9980',
     borderRadius: 20,
     padding: 10,
     paddingLeft: 30,

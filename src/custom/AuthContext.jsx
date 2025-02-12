@@ -7,7 +7,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
   const [userToken, setUserToken] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -41,7 +41,8 @@ export const AuthProvider = ({children}) => {
         lastName,
         email,
       }}>
-      {children}
+      children
+      {isLoading ? <ActivityIndicator size={'large'} /> : children}
     </AuthContext.Provider>
   );
 };

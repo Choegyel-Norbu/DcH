@@ -28,6 +28,7 @@ export default function CustomDrawer(props) {
   }, []);
 
   const showDialog = () => setVisible(true);
+
   const hideDialog = () => {
     setVisible(false);
     props.navigation.closeDrawer();
